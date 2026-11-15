@@ -1,0 +1,65 @@
+name: Testes da Vitrine Digital
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  testes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Obter codigo
+        uses: actions/checkout@v4
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Configurar Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Instalar ferramentas de teste e cobertura
+        run: npm ci
+      - name: Executar testes de conteudo
+        run: python -m unittest discover -s tests -v
+      - name: Executar testes de estrutura
+        run: python tests/estrutura.py
+      - name: Validar JavaScript
+        run: node --check js/main.js
+      - name: Executar regressao de foco
+        run: node tests/foco.cjs
+      - name: Medir cobertura do JavaScript da interface
+        run: npm run test:coverage
+      - name: Registrar cobertura no resumo
+        run: |
+          node - <<'JS'
+          const fs = require('node:fs');
+          const { total } = JSON.parse(fs.readFileSync('coverage/coverage-summary.json', 'utf8'));
+          const report = [
+            '## Cobertura de js/main.js',
+            '',
+            '| Metrica | Cobertura |',
+            '| --- | --- |',
+            ...['lines', 'statements', 'functions', 'branches'].map(name => {
+              const value = total[name];
+              return `| ${name} | ${value.pct}% (${value.covered}/${value.total}) |`;
+            }),
+            '',
+            'Medicao por V8/c8 com testes de interface em DOM simulado (jsdom). O escopo e js/main.js; HTML, CSS e os proprios testes ficam fora do denominador.',
+            '',
+          ].join('\n');
+          fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, report);
+          JS
+      - name: Disponibilizar relatorio de cobertura
+        uses: actions/upload-artifact@v4
+        with:
+          name: cobertura-javascript
+          path: coverage/
+          if-no-files-found: error
+

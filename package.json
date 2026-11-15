@@ -1,0 +1,13 @@
+{
+  "name": "vitrine-digital-feito-para-damas",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "node --test tests/interface.test.cjs",
+    "test:coverage": "c8 --all --include=js/main.js --reporter=text --reporter=html --reporter=json-summary node --test tests/interface.test.cjs"
+  },
+  "devDependencies": {
+    "c8": "9.1.0",
+    "jsdom": "26.1.0"
+  }
+}
