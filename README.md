@@ -70,6 +70,24 @@ e disponibiliza o artefato `cobertura-javascript`. O percentual de linhas e o de
 branches são métricas distintas. A execução em DOM simulado não avalia renderização
 visual nem substitui validação com leitor de tela ou com uma pessoa real.
 
+## Monitoramento da versão publicada
+
+O workflow `.github/workflows/monitoramento.yml` consulta o endereço HTTPS público
+nos minutos 17 e 47 de cada hora (UTC), por execução manual ou após mudanças nos
+arquivos do monitor na branch main. A verificação usa apenas a biblioteca padrão
+do Python, com três tentativas por recurso, timeout de 20 segundos e intervalo
+de cinco segundos entre tentativas.
+
+O script `scripts/monitoramento.py` verifica HTTP 200 e conteúdo esperado no HTML,
+CSS e JavaScript. O estado UP exige sucesso nos três recursos. Uma falha persistente
+registra DOWN e encerra o job com erro, visível no histórico do GitHub Actions e
+nas notificações de execução habilitadas pelo usuário. O resumo inclui data UTC,
+código HTTP, tempo de resposta e tentativas. O JSON fica disponível como artefato
+por 14 dias. O agendamento está sujeito à disponibilidade e aos atrasos do GitHub
+Actions. Este monitor HTTP não executa testes visuais ou de interação.
+
+Para conferir manualmente, execute `python scripts/monitoramento.py`.
+
 ## Limites e evolução acadêmica
 
 Esta versão é um front-end estático. Não contém Flask, banco de dados, autenticação ou painel administrativo.

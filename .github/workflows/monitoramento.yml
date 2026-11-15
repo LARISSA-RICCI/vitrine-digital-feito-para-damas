@@ -1,0 +1,36 @@
+name: Monitoramento do site publicado
+
+on:
+  schedule:
+    - cron: '17,47 * * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/monitoramento.yml'
+      - 'scripts/monitoramento.py'
+
+permissions:
+  contents: read
+
+jobs:
+  disponibilidade:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Obter codigo
+        uses: actions/checkout@v4
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verificar site, CSS e JavaScript em producao
+        run: python scripts/monitoramento.py
+      - name: Guardar resultado do monitoramento
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: resultado-monitoramento
+          path: monitoramento.json
+          retention-days: 14
+          if-no-files-found: error
