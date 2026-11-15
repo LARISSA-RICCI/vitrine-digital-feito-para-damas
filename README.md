@@ -1,29 +1,58 @@
 # Vitrine Digital Feito para Damas
 
-MVP acadêmico de apresentação dos serviços de beleza e bem-estar do salão **Feito para Damas**, em Bebedouro (SP), desenvolvido para a disciplina de Projeto de Software.
+MVP acadêmico da disciplina Projeto de Software: uma vitrine de serviços de beleza e bem-estar para clientes do salão Feito para Damas, em Bebedouro/SP.
 
-## Estado do projeto
+## Funcionalidades implementadas
 
-- **Implementado:** página inicial responsiva em `index.html`, com identidade visual, apresentação dos serviços, informações do salão, localização e links de contato.
-- **Verificação automatizada:** testes estáticos que conferem a estrutura HTML, as seções principais, os links e o conteúdo essencial.
-- **Planejado para evolução:** API Python/Flask e base SQLite para catálogo dinâmico de categorias e serviços. **Esses componentes ainda não estão implementados neste repositório.**
+- Catálogo de serviços agrupados por categoria.
+- Links de consulta pelo WhatsApp com o nome do serviço.
+- Localização, cópia de endereço e horários de atendimento.
+- Indicador de funcionamento calculado no fuso America/Sao_Paulo.
+- Galeria ampliada, navegação por teclado, fechamento com Escape e retorno do foco.
+- Layout adaptável e respeito à preferência por movimento reduzido.
 
-A versão inicial foi preservada em um arquivo HTML independente, com estilos, scripts e imagens incorporados. A divisão do código em arquivos externos faz parte de uma etapa posterior de organização do projeto, sem necessidade de reconstruir o visual.
+## Estrutura
 
-## Como visualizar
+- `index.html`: conteúdo, estrutura e imagens incorporadas como data URI.
+- `css/style.css`: identidade visual, layout e estilos.
+- `js/main.js`: catálogo, horários, navegação e galeria.
+- `tests/estrutura.py`: integridade dos recursos, IDs, imagens e links.
+- `tests/foco.cjs`: regressão do manipulador de teclado da galeria.
 
-Abra `index.html` em um navegador. Os links de Instagram, WhatsApp e mapa exigem acesso à internet.
+## Executar
 
-## Como testar
+Baixe ou clone o repositório mantendo as pastas. Abra `index.html` no navegador.
+Opcionalmente, com Python 3 instalado, execute na raiz:
 
-Com Python 3 instalado, na pasta raiz do projeto:
-
-```bash
-python -m unittest discover -s tests -v
+```sh
+python -m http.server 8000
 ```
 
-A mesma verificação é executada automaticamente pelo GitHub Actions nos Pull Requests destinados à branch `main` e nos envios à própria `main`.
+Acesse http://localhost:8000. O servidor acima apenas entrega arquivos estáticos.
 
-## Escopo acadêmico
+## Verificar
 
-O projeto preserva a continuidade das Experiências Práticas I e II. A Experiência Prática III contempla implementação verificável, versionamento, revisão via Pull Request, testes e registro das evidências. A validação com o salão deve ser documentada somente após sua realização.
+Requer Python 3 e Node.js; os testes não dependem de pacotes adicionais.
+
+```sh
+python tests/estrutura.py
+node --check js/main.js
+node tests/foco.cjs
+```
+
+Os testes de foco executam o manipulador real com objetos controlados; não substituem uma avaliação em navegador e com tecnologias assistivas.
+A validação visual em navegador não foi concluída neste ambiente.
+
+## Limites e evolução acadêmica
+
+Esta versão é um front-end estático. Não contém Flask, banco de dados, autenticação ou painel administrativo.
+O clique de consulta abre o WhatsApp; não confirma nem salva um agendamento.
+
+A evolução proposta para atender aos requisitos técnicos da atividade inclui Python/Flask, SQLite,
+entidades Categoria e Serviço relacionadas e Usuário administrador com senha protegida por hash.
+Esses componentes permanecem planejados e não devem ser apresentados como implementados.
+
+## Validação com público-alvo
+
+Planejar uma sessão com uma cliente real: localizar um serviço, iniciar uma consulta e encontrar endereço e horários.
+Registrar conclusão, tempo por tarefa, dificuldades e satisfação. Nenhum teste com participante foi registrado neste repositório.
