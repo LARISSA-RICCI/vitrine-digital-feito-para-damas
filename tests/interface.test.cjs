@@ -67,6 +67,21 @@ test('renderiza as quatro categorias e os 24 servicos com consultas individuais'
   assert.ok(document.querySelector('.scrollreveal.visible'));
 });
 
+test('divulga perfumes arabes e direciona a consulta ao WhatsApp oficial', t => {
+  const { document } = startSite(t);
+  const card = document.getElementById('perfumaria');
+  assert.equal(card.getAttribute('aria-labelledby'), 'perfumes-title');
+  assert.equal(card.querySelector('h3').textContent, 'Perfumes árabes');
+  assert.match(card.querySelector('p').textContent, /solicite o catálogo/);
+  const link = card.querySelector('a');
+  const url = new URL(link.href);
+  assert.equal(url.hostname, 'wa.me');
+  assert.equal(url.pathname, '/5517992849596');
+  assert.equal(url.searchParams.get('text'), 'Olá! Vim pela Vitrine Digital e gostaria de consultar o catálogo e a disponibilidade dos perfumes árabes.');
+  assert.equal(link.target, '_blank');
+  assert.equal(link.rel, 'noopener noreferrer');
+});
+
 test('abre categoria pelo hash e fecha as outras ao expandir uma categoria', t => {
   const { window, document, scrolls } = startSite(t, { hash: '#facial', reduceMotion: true });
   assert.equal(document.getElementById('facial').open, true);

@@ -6,6 +6,7 @@ MVP acadêmico da disciplina Projeto de Software: uma vitrine de serviços de be
 
 - Catálogo de serviços agrupados por categoria.
 - Links de consulta pelo WhatsApp com o nome do serviço.
+- Destaque de perfumes árabes com consulta de catálogo e disponibilidade pelo WhatsApp oficial.
 - Localização, cópia de endereço e horários de atendimento.
 - Indicador de funcionamento calculado no fuso America/Sao_Paulo.
 - Galeria ampliada, navegação por teclado, fechamento com Escape e retorno do foco.
@@ -19,7 +20,7 @@ MVP acadêmico da disciplina Projeto de Software: uma vitrine de serviços de be
 - `tests/estrutura.py`: integridade dos recursos, IDs, imagens e links.
 - `tests/foco.cjs`: regressão do manipulador de teclado da galeria.
 - `tests/test_vitrine.py`: verificações do conteúdo da página.
-- `tests/interface.test.cjs`: oito testes de interface e integração em DOM simulado.
+- `tests/interface.test.cjs`: nove testes de interface e integração em DOM simulado.
 - `.github/workflows/testes.yml`: execução dos testes e publicação do relatório de cobertura.
 
 ## Executar
