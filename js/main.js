@@ -176,7 +176,17 @@
     }));
     lbClose.addEventListener('click', closeLb);
     lb.addEventListener('click', e => { if (e.target === lb) closeLb(); });
-    document.addEventListener('keydown', e => { if (e.key === 'Escape' && !lb.hidden) closeLb(); });
+    document.addEventListener('keydown', e => {
+      if (lb.hidden) return;
+      if (e.key === 'Escape') { e.preventDefault(); closeLb(); return; }
+      if (e.key !== 'Tab') return;
+      const focusable = Array.from(lb.querySelectorAll('a[href], button:not([disabled]), [tabindex="0"]'));
+      if (!focusable.length) return;
+      const first = focusable[0], last = focusable[focusable.length - 1];
+      if (!lb.contains(document.activeElement)) { e.preventDefault(); first.focus(); }
+      else if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
     lbGo.addEventListener('click', e => { e.preventDefault(); const id = lbTarget; closeLb(); setTimeout(() => goTo(id), 60); });
   }
   const navAnchors=Array.from(document.querySelectorAll('[data-section]'));
